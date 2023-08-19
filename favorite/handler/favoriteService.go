@@ -44,7 +44,6 @@ func (f *Favorite) FavoriteList(ctx context.Context, request *proto.FavoriteList
 	token := request.Token
 	viedoList, err := f.mapper.FavoriteList(ctx, usrId, token)
 	if err != nil {
-
 		return err
 	}
 	response.VideoList = viedoList
