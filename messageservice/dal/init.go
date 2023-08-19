@@ -1,8 +1,8 @@
 package dal
 
 import (
-	"github.com/Tiktok-Boys/douyin/src/messageservice/config"
-	"github.com/Tiktok-Boys/douyin/src/messageservice/dal/db"
+	"github.com/Tiktok-Boys/douyin/messageservice/config"
+	"github.com/Tiktok-Boys/douyin/messageservice/dal/db"
 )
 
 // Init init dal

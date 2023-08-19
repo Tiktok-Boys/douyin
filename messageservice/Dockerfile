@@ -13,10 +13,10 @@ FROM scratch
 
 COPY --from=builder /build/messageservice /app/messageservice
 
-ENV MYSQL_HOST="172.17.0.4" \
+ENV MYSQL_HOST="kasperxms.xyz" \
     MYSQL_PORT=3306 \
-    MYSQL_USERNAME="root" \
-    MYSQL_PASSWORD="tiktok" \
+    MYSQL_USERNAME="tiktok" \
+    MYSQL_PASSWORD="TikTokBoys123" \
     MYSQL_DATABASE="tiktok"
 
 EXPOSE 8666
