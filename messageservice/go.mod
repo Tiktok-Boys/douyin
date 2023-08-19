@@ -1,4 +1,4 @@
-module github.com/Tiktok-Boys/douyin/src/messageservice
+module github.com/Tiktok-Boys/douyin/messageservice
 
 go 1.20
 

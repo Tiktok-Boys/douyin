@@ -73,5 +73,6 @@ CREATE TABLE message (
     created_at INT,
     FOREIGN KEY (sender_id) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (receiver_id) REFERENCES user(id) ON DELETE CASCADE,
-    INDEX idx_messages_sender_receiver (sender_id, receiver_id) -- 需要频繁查找两个人之间的聊天记录
+    INDEX idx_messages_sender_receiver (sender_id, receiver_id), -- 需要频繁查找两个人之间的聊天记录
+    INDEX idx_messages_created_at (created_at) -- 需要根据消息生成时间排序
 );

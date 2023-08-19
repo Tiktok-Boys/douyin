@@ -8,10 +8,10 @@ import (
 	"go-micro.dev/v4"
 	"go-micro.dev/v4/logger"
 
-	"github.com/Tiktok-Boys/douyin/src/messageservice/config"
-	"github.com/Tiktok-Boys/douyin/src/messageservice/dal"
-	"github.com/Tiktok-Boys/douyin/src/messageservice/handler"
-	pb "github.com/Tiktok-Boys/douyin/src/messageservice/proto"
+	"github.com/Tiktok-Boys/douyin/messageservice/config"
+	"github.com/Tiktok-Boys/douyin/messageservice/dal"
+	"github.com/Tiktok-Boys/douyin/messageservice/handler"
+	pb "github.com/Tiktok-Boys/douyin/messageservice/proto"
 )
 
 var (

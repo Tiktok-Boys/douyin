@@ -4,8 +4,8 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/Tiktok-Boys/douyin/src/messageservice/dal/db"
-	pb "github.com/Tiktok-Boys/douyin/src/messageservice/proto"
+	"github.com/Tiktok-Boys/douyin/messageservice/dal/db"
+	pb "github.com/Tiktok-Boys/douyin/messageservice/proto"
 )
 
 type MessageService struct{}
