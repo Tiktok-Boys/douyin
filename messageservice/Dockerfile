@@ -17,7 +17,9 @@ ENV MYSQL_HOST="kasperxms.xyz" \
     MYSQL_PORT=3306 \
     MYSQL_USERNAME="tiktok" \
     MYSQL_PASSWORD="TikTokBoys123" \
-    MYSQL_DATABASE="tiktok"
+    MYSQL_DATABASE="tiktok" \
+    ETCD_HOST="172.17.0.8" \
+    ETCD_PORT=2379
 
 EXPOSE 8666
 

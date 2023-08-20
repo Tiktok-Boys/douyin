@@ -9,30 +9,7 @@ import (
 )
 
 type Config struct {
-	Port  int
-	MySQL MySQLConfig
-	Etcd  EtcdConfig
-}
-
-// type RedisConfig struct {
-// 	Addr string
-// }
-
-// type TracingConfig struct {
-// 	Enable bool
-// 	Jaeger JaegerConfig
-// }
-
-// type JaegerConfig struct {
-// 	URL string
-// }
-
-type MySQLConfig struct {
-	Host     string
-	Port     int
-	Username string
-	Password string
-	Database string
+	Etcd EtcdConfig
 }
 
 type EtcdConfig struct {
@@ -40,25 +17,7 @@ type EtcdConfig struct {
 	Port int
 }
 
-var cfg *Config = &Config{
-	Port: 8666,
-}
-
-func Address() string {
-	return fmt.Sprintf(":%d", cfg.Port)
-}
-
-// func Redis() RedisConfig {
-// 	return cfg.Redis
-// }
-
-// func Tracing() TracingConfig {
-// 	return cfg.Tracing
-// }
-
-func MySQL() MySQLConfig {
-	return cfg.MySQL
-}
+var cfg *Config = &Config{}
 
 func EtcdAddress() string {
 	return fmt.Sprintf("%s:%d", cfg.Etcd.Host, cfg.Etcd.Port)
