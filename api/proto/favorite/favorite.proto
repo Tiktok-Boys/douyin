@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package favorite;
+
+option go_package = "./proto;favorite";
+
+service FavoriteService{
+  rpc FavoriteAction(favorite_action_request) returns (favorite_action_response);
+  rpc FavoriteList(favorite_list_request) returns(favorite_list_response);
+}
+
+message favorite_action_request{
+  string token = 1;
+  int64 video_id = 2;
+  int32 action_type = 3;
+}
+
+message favorite_action_response{
+  int32 status_code = 1;
+  string status_msg = 2;
+}
+
+message favorite_list_request {
+  int64 usr_id = 1;
+  string token = 2;
+}
+
+message favorite_list_response {
+  int32 status_code = 1;
+  string status_msg = 2;
+  repeated Video video_list = 3;
+}
+
+message Video{
+  int64 id = 1;
+  User author = 2;
+  string play_url = 3;
+  string cover_url = 4;
+  int32 favorite_count = 5;
+  int32 comment_count = 6;
+  bool is_favorite = 7;
+  string title = 8;
+}
+message User{
+  int64 id = 1;
+  string name = 2;
+  int64 follow_count = 3;
+  int64 follower_count = 4;
+  bool is_follow = 5;
+
+  string avatar = 6;
+  string background_image = 7;
+  string signature = 8;
+  string total_favorited = 9;
+  int32 work_count = 10;
+  int64 favorite_count = 11;
+}

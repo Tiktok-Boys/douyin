@@ -4,9 +4,11 @@ import (
 	"log"
 
 	grpcc "github.com/go-micro/plugins/v4/client/grpc"
+	"github.com/go-micro/plugins/v4/registry/etcd"
 	grpcs "github.com/go-micro/plugins/v4/server/grpc"
 	"go-micro.dev/v4"
 	"go-micro.dev/v4/logger"
+	"go-micro.dev/v4/registry"
 
 	"github.com/Tiktok-Boys/douyin/messageservice/config"
 	"github.com/Tiktok-Boys/douyin/messageservice/dal"
@@ -15,7 +17,7 @@ import (
 )
 
 var (
-	name    = "messageservice"
+	name    = "tiktokboys.douyin.message"
 	version = "1.0.0"
 )
 
@@ -26,6 +28,7 @@ func main() {
 	}
 
 	logger.Info(config.MySQL())
+	logger.Info(config.EtcdAddress())
 
 	// Init Data Access Layer
 	dal.Init(config.MySQL())
@@ -39,6 +42,9 @@ func main() {
 		micro.Name(name),
 		micro.Version(version),
 		micro.Address(config.Address()),
+		micro.Registry(etcd.NewRegistry(
+			registry.Addrs(config.EtcdAddress()),
+		)),
 	}
 	srv.Init(opts...)
 
