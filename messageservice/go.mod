@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/go-micro/plugins/v4/client/grpc v1.1.0
+	github.com/go-micro/plugins/v4/registry/etcd v1.2.0
 	github.com/go-micro/plugins/v4/server/grpc v1.2.0
 	github.com/pkg/errors v0.9.1
 	go-micro.dev/v4 v4.10.2
@@ -18,7 +19,6 @@ require (
 	github.com/ProtonMail/go-crypto v0.0.0-20230717121422-5aa5874ade95 // indirect
 	github.com/acomagu/bufpipe v1.0.4 // indirect
 	github.com/bitly/go-simplejson v0.5.1 // indirect
-	github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 // indirect
 	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/coreos/go-semver v0.3.1 // indirect
 	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
@@ -31,7 +31,6 @@ require (
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.4.1 // indirect
 	github.com/go-git/go-git/v5 v5.8.1 // indirect
-	github.com/go-micro/plugins/v4/registry/etcd v1.2.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
 	github.com/gobwas/httphead v0.1.0 // indirect
 	github.com/gobwas/pool v0.2.1 // indirect
@@ -47,7 +46,6 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/miekg/dns v1.1.55 // indirect
-	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/hashstructure v1.1.0 // indirect
 	github.com/nxadm/tail v1.4.8 // indirect
 	github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c // indirect
@@ -56,7 +54,6 @@ require (
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sergi/go-diff v1.3.1 // indirect
-	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/skeema/knownhosts v1.2.0 // indirect
 	github.com/urfave/cli/v2 v2.25.7 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
@@ -64,7 +61,6 @@ require (
 	go.etcd.io/etcd/api/v3 v3.5.9 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.9 // indirect
 	go.etcd.io/etcd/client/v3 v3.5.9 // indirect
-	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.25.0 // indirect
 	golang.org/x/crypto v0.12.0 // indirect
