@@ -1,11 +1,9 @@
 package main
 
 import (
-	"github.com/Tiktok-Boys/douyin/feed/config"
-	"github.com/Tiktok-Boys/douyin/feed/dal"
-	"github.com/Tiktok-Boys/douyin/feed/handler"
-	"github.com/gin-gonic/gin"
-	"log"
+	"feed/config"
+	"feed/dal"
+	"go-micro.dev/v4/logger"
 )
 
 func main() {
@@ -19,9 +17,4 @@ func main() {
 	// Init Data Access Layer
 	dal.Init(config.MySQL())
 
-	router := gin.Default()
-
-	router.GET("/douyin/feed",handler.Feed)
-
-	router.run(:9999)
 }

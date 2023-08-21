@@ -1,23 +1,9 @@
 package db
 
 import (
-	"fmt"
-	"sync"
 	"time"
 )
 
-type Video struct {
-	VideoId       int64  `gorm:"primaryKey"`
-	UserId        int64  `gorm:"default:(-)"`
-	PlayUrl       string `gorm:"default:(-)"`
-	CoverUrl      string `gorm:"default:(-)"`
-	FavoriteCount int64  `gorm:"default:(-)"`
-	CommentCount  int64  `gorm:"default:(-)"`
-	Title         string `gorm:"default:(-)"`
-	CreateAt      time.Time
-	UpdateAt      time.Time
-	DeleteAt      time.Time
-}
 type Video struct {
 	Id         int64
 	User_id    int64
@@ -56,7 +42,7 @@ func QueryVideoByUserId(userId int64) ([]*Video, error) {
 }
 
 // 根据时间和需要查询的条数，获取video列表
-func (*VideoDao) QueryVideo(date *string, limit int) []*Video {
+func QueryVideo(date *string, limit int) []*Video {
 	var VideoList []*Video
 	DB.Where("create_at < ?", *date).Order("create_at desc").Find(&VideoList)
 	if len(VideoList) <= limit {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"go-micro.dev/v4/logger"
 
-	"github.com/Tiktok-Boys/douyin/feed/config"
+	"feed/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

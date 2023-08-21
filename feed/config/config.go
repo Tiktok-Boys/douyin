@@ -1,8 +1,6 @@
 package config
 
 import (
-	"fmt"
-
 	"github.com/pkg/errors"
 	"go-micro.dev/v4/config"
 	"go-micro.dev/v4/config/source/env"
