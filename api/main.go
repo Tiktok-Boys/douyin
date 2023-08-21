@@ -4,6 +4,7 @@ import (
 	"github.com/Tiktok-Boys/douyin/api/config"
 	"github.com/Tiktok-Boys/douyin/api/handler"
 	"github.com/Tiktok-Boys/douyin/api/middleware"
+	favorite "github.com/Tiktok-Boys/douyin/api/proto/favorite"
 	message "github.com/Tiktok-Boys/douyin/api/proto/message"
 	"github.com/gin-gonic/gin"
 
@@ -14,7 +15,8 @@ import (
 )
 
 var (
-	messageServiceName = "tiktokboys.douyin.message"
+	messageServiceName  = "tiktokboys.douyin.message"
+	favoriteServiceName = "tiktokboys.douyin.favorite"
 )
 
 func main() {
@@ -51,6 +53,13 @@ func setupRouter() *gin.Engine {
 		message := authenticated.Group("/douyin/message")
 		message.GET("/chat", handler.GetChatHandler)
 		message.POST("/action", handler.ActMessageHandler)
+
+		// favorite service
+		favorite := authenticated.Group("/douyin/favorite")
+		{
+			favorite.POST("/action", handler.FavoriteAction)
+			favorite.GET("/list", handler.FavoriteList)
+		}
 	}
 
 	return r
@@ -66,4 +75,10 @@ func serviceDiscovery(etcdAddr string) {
 	)
 	messageService.Init(micro.Registry(etcdReg))
 	handler.MessageServiceClient = message.NewMessageService(messageServiceName, messageService.Client())
+
+	favoriteService := micro.NewService(
+		micro.Client(grpcc.NewClient()),
+	)
+	favoriteService.Init(micro.Registry(etcdReg))
+	handler.FavoriteServiceClient = favorite.NewFavoriteService(favoriteServiceName, favoriteService.Client())
 }

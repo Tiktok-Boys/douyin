@@ -1,8 +1,11 @@
 package main
 
 import (
+	"favorite/config"
 	"favorite/handler"
 	pb "favorite/proto"
+	"github.com/go-micro/plugins/v4/registry/etcd"
+	"go-micro.dev/v4/registry"
 
 	"go-micro.dev/v4"
 	"go-micro.dev/v4/logger"
@@ -20,6 +23,9 @@ func main() {
 		micro.Name(service),
 		micro.Address("127.0.0.1:8866"),
 		micro.Version(version),
+		micro.Registry(etcd.NewRegistry(
+			registry.Addrs(config.EtcdAddress()),
+		)),
 	)
 
 	// Register handler

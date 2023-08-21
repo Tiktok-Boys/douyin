@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"go-micro.dev/v4/logger"
 
 	"github.com/Tiktok-Boys/douyin/messageservice/config"
 	"gorm.io/driver/mysql"
@@ -22,7 +23,7 @@ func Init(cfg config.MySQLConfig) {
 	// mysql_host := "172.17.0.4"
 	// mysql_port := "3306"
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", mysql_user, mysql_password, mysql_host, mysql_port, mysql_database)
-
+	logger.Info(dsn)
 	DB, err = gorm.Open(mysql.Open(dsn),
 		&gorm.Config{
 			PrepareStmt:            true,
