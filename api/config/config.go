@@ -17,7 +17,12 @@ type EtcdConfig struct {
 	Port int
 }
 
-var cfg *Config = &Config{}
+var cfg *Config = &Config{
+	Etcd: EtcdConfig{
+		Host: "0.0.0.0",
+		Port: 2379,
+	},
+}
 
 func EtcdAddress() string {
 	return fmt.Sprintf("%s:%d", cfg.Etcd.Host, cfg.Etcd.Port)
