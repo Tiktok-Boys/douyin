@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"github.com/pkg/errors"
 	"go-micro.dev/v4/config"
 	"go-micro.dev/v4/config/source/env"
@@ -8,6 +9,7 @@ import (
 
 type Config struct {
 	MySQL MySQLConfig
+	Etcd  EtcdConfig
 }
 
 type MySQLConfig struct {
@@ -18,12 +20,21 @@ type MySQLConfig struct {
 	Database string
 }
 
-var cfg *Config = &Config{
+type EtcdConfig struct {
+	Host string
+	Port int
+}
+
+var CFG *Config = &Config{
 	// Port: 8777,
 }
 
 func MySQL() MySQLConfig {
-	return cfg.MySQL
+	return CFG.MySQL
+}
+
+func EtcdAddress() string {
+	return fmt.Sprintf("%s:%d", CFG.Etcd.Host, CFG.Etcd.Port)
 }
 
 func Load() error {
@@ -34,7 +45,7 @@ func Load() error {
 	if err := configor.Load(); err != nil {
 		return errors.Wrap(err, "configor.Load")
 	}
-	if err := configor.Scan(cfg); err != nil {
+	if err := configor.Scan(CFG); err != nil {
 		return errors.Wrap(err, "configor.Scan")
 	}
 	return nil

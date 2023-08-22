@@ -1,6 +1,7 @@
 package db
 
 import (
+	pb "feed/proto"
 	"time"
 )
 
@@ -42,11 +43,8 @@ func QueryVideoByUserId(userId int64) ([]*Video, error) {
 }
 
 // 根据时间和需要查询的条数，获取video列表
-func QueryVideo(date *string, limit int) []*Video {
-	var VideoList []*Video
-	DB.Where("create_at < ?", *date).Order("create_at desc").Find(&VideoList)
-	if len(VideoList) <= limit {
-		return VideoList
-	}
-	return VideoList[0:limit]
+func QueryVideo(date *string, limit int) []*pb.Video {
+	var VideoList []*pb.Video
+	DB.Limit(limit).Where("create_at < ?", *date).Order("create_at desc").Find(&VideoList)
+	return VideoList
 }

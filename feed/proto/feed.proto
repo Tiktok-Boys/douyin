@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package favorite;
+
+option go_package = "./proto;feed";
+
+message FeedRequest{
+  // @gotags: json:"latest_time"
+  int64 LatestTime = 1;
+  // @gotags: json:"token"
+  string Token = 2;
+}
+
+message  FeedResponse{
+  // @gotags: json:"status_code"
+  int32 StatusCode = 1;
+  // @gotags: json:"status_msg"
+  string StatusMsg = 2;
+  // @gotags: json:"video_list"
+  repeated Video VideoList = 3;
+  // @gotags: json:"next_time"
+  int64 NextTime = 4;
+}
+
+message Video {
+  // @gotags: json:"id"
+  int64 Id = 1;
+  // @gotags: json:"author"
+  User Author = 2;
+  // @gotags: json:"play_url"
+  string PlayUrl = 3;
+  // @gotags: json:"cover_url"
+  string CoverUrl = 4;
+  // @gotags: json:"favorite_count"
+  int64 FavoriteCount = 5;
+  // @gotags: json:"comment_count"
+  int64 CommentCount = 6;
+  // @gotags: json:"is_favorite"
+  bool IsFavorite = 7;
+  // @gotags: json:"title"
+  string Title = 8;
+}
+
+message User {
+  // @gotags: json:"id"
+  int64 Id = 1;
+  // @gotags: json:"name"
+  string Name = 2;
+  // @gotags: json:"follow_count"
+  int64 FollowCount = 3;
+  // @gotags: json:"follower_count"
+  int64 FollowerCount = 4;
+  // @gotags: json:"is_follow"
+  bool IsFollow = 5;
+  // @gotags: json:"avatar"
+  string Avatar = 6;
+  // @gotags: json:"background_image"
+  string BackgroundImage = 7;
+  // @gotags: json:"signature"
+  string Signature = 8;
+  // @gotags: json:"total_favorited"
+  int64 TotalFavorited = 9;
+  // @gotags: json:"work_count"
+  int64 WorkCount = 10;
+  // @gotags: json:"favorite_count"
+  int64 FavoriteCount = 11;
+}
+
+service FeedService{
+  rpc Feed(FeedRequest) returns (FeedResponse);
+}
