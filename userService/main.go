@@ -1,8 +1,11 @@
 package main
 
 import (
+	"github.com/go-micro/plugins/v4/registry/etcd"
 	"go-micro.dev/v4"
 	"go-micro.dev/v4/logger"
+	"go-micro.dev/v4/registry"
+	"userService/config"
 	"userService/handler"
 	pb "userService/proto"
 )
@@ -18,7 +21,7 @@ func main() {
 	srv.Init(
 		micro.Name(service),
 		micro.Version(version),
-		// micro.Registry(etcd.NewRegistry(registry.Addrs(config.EtcdAddress()))),
+		micro.Registry(etcd.NewRegistry(registry.Addrs(config.EtcdAddress()))),
 	)
 
 	// Register handler

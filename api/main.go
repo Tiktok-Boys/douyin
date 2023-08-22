@@ -6,6 +6,7 @@ import (
 	"github.com/Tiktok-Boys/douyin/api/middleware"
 	favorite "github.com/Tiktok-Boys/douyin/api/proto/favorite"
 	message "github.com/Tiktok-Boys/douyin/api/proto/message"
+	user "github.com/Tiktok-Boys/douyin/api/proto/user"
 	"github.com/gin-gonic/gin"
 
 	grpcc "github.com/go-micro/plugins/v4/client/grpc"
@@ -17,6 +18,7 @@ import (
 var (
 	messageServiceName  = "tiktokboys.douyin.message"
 	favoriteServiceName = "tiktokboys.douyin.favorite"
+	userServiceName     = "tiktokboys.douyin.user"
 )
 
 func main() {
@@ -60,6 +62,14 @@ func setupRouter() *gin.Engine {
 			favorite.POST("/action", handler.FavoriteAction)
 			favorite.GET("/list", handler.FavoriteList)
 		}
+
+		// user service
+		user := authenticated.Group("/douyin/user")
+		{
+			user.POST("/login", handler.LoginHandler)
+			user.POST("/register", handler.RegisterHandler)
+			user.GET("/", handler.UserInfoHandler)
+		}
 	}
 
 	return r
@@ -81,4 +91,9 @@ func serviceDiscovery(etcdAddr string) {
 	)
 	favoriteService.Init(micro.Registry(etcdReg))
 	handler.FavoriteServiceClient = favorite.NewFavoriteService(favoriteServiceName, favoriteService.Client())
+
+	userService := micro.NewService(
+		micro.Client(grpcc.NewClient()),
+	)
+	handler.UserServiceClient = user.NewUserService(userServiceName, userService.Client())
 }
