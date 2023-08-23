@@ -14,9 +14,10 @@ var RedisDB3 *redis.Client // follower count
 var RedisDB4 *redis.Client // favorited count
 var RedisDB5 *redis.Client // work count
 var RedisDB6 *redis.Client // favs count
+var err error
 
 func init() {
-	var err error
+
 	MysqlDB, err = gorm.Open(mysql.Open("tiktok:TikTokBoys123@tcp(kasperxms.xyz:3306)/tiktok?charset=utf8mb4&parseTime=True&loc=Local"))
 	if err != nil {
 		panic(err)

@@ -5,7 +5,7 @@ import (
 )
 
 type User struct {
-	Id               int64
+	Id               int64 `gorm:"primaryKey"`
 	Name             string
 	Avatar           string
 	Background_image string
@@ -13,4 +13,8 @@ type User struct {
 	Created_at       time.Time
 	Updated_at       time.Time
 	Deleted_at       time.Time
+}
+
+func (User) TableName() string {
+	return "user"
 }

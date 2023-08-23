@@ -36,13 +36,10 @@ func NewMapper() *Mapper {
 
 func (m *Mapper) getUserInfo(ctx context.Context, targetUserId int64, myUserId int64, token string) (*userService.User, error) {
 	var user_ model.User
-	m.db.First(&user_, targetUserId)
-
-	isFollow := true
-	var follow model.Follow
-	err := m.db.Where("follower_id = ? AND followee_id = ?", myUserId, targetUserId).First(&follow).Error
+	m = NewMapper()
+	err := m.db.First(&user_, targetUserId).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		isFollow = false
+		return nil, nil
 	}
 
 	followCountStr, _ := m.rdb2.Get(ctx, strconv.FormatInt(targetUserId, 10)).Result()
@@ -56,6 +53,13 @@ func (m *Mapper) getUserInfo(ctx context.Context, targetUserId int64, myUserId i
 	favoritedCount, _ := strconv.ParseInt(favoritedCountStr, 10, 64)
 	workCount, _ := strconv.ParseInt(workCountStr, 10, 64)
 	favCount, _ := strconv.ParseInt(favCountStr, 10, 64)
+
+	isFollow := true
+	var follow model.Follow
+	err = m.db.Where("follower_id = ? AND followee_id = ?", myUserId, targetUserId).First(&follow).Error
+	if err != nil {
+		isFollow = false
+	}
 
 	user := &userService.User{
 		Id:              user_.Id,
@@ -75,6 +79,7 @@ func (m *Mapper) getUserInfo(ctx context.Context, targetUserId int64, myUserId i
 
 func (m *Mapper) getIdByUsername(ctx context.Context, username string) (int64, error) {
 	var user model.User
+	m = NewMapper()
 	err := m.db.Where("name = ?", username).First(&user).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return -1, nil
@@ -83,6 +88,7 @@ func (m *Mapper) getIdByUsername(ctx context.Context, username string) (int64, e
 }
 
 func (m *Mapper) createUser(ctx context.Context, username string, password string) error {
+	m = NewMapper()
 	user := model.User{
 		Name:             username,
 		Avatar:           "http://kasperxms.xyz:9000/avatar/c.jpg",
@@ -94,13 +100,31 @@ func (m *Mapper) createUser(ctx context.Context, username string, password strin
 	if err != nil {
 		return err
 	}
-	result := m.db.Create(&user)
+	result := m.db.Select("name", "avatar", "background", "signature").Create(&user)
 	return result.Error
 }
 
+func (m *Mapper) initUserCounts(ctx context.Context, userId int64) error {
+	m = NewMapper()
+	userIdStr := strconv.FormatInt(userId, 10)
+	err := m.rdb2.Set(ctx, userIdStr, "0", 0).Err()
+	err = m.rdb3.Set(ctx, userIdStr, "0", 0).Err()
+	err = m.rdb4.Set(ctx, userIdStr, "0", 0).Err()
+	err = m.rdb5.Set(ctx, userIdStr, "0", 0).Err()
+	err = m.rdb6.Set(ctx, userIdStr, "0", 0).Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (m *Mapper) isPasswordCorrect(ctx context.Context, username string, password string) (bool, error) {
+	m = NewMapper()
 	cipheredPassword := utils.Sha256(password)
 	realPassword, err := m.rdb1.Get(ctx, username).Result()
+	if errors.Is(err, redis.Nil) {
+		return false, nil
+	}
 	if err != nil {
 		return false, err
 	}

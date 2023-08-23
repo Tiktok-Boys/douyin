@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/go-micro/plugins/v4/registry/etcd"
+	grpcs "github.com/go-micro/plugins/v4/server/grpc"
 	"go-micro.dev/v4"
 	"go-micro.dev/v4/logger"
 	"go-micro.dev/v4/registry"
@@ -11,16 +12,25 @@ import (
 )
 
 var (
-	service = "userservice"
+	service = "tiktokboys.douyin.user"
 	version = "latest"
 )
 
 func main() {
+	if err := config.Load(); err != nil {
+		logger.Fatal(err)
+	}
+
+	logger.Info(config.EtcdAddress())
+
 	// Create service
-	srv := micro.NewService()
+	srv := micro.NewService(
+		micro.Server(grpcs.NewServer()),
+	)
 	srv.Init(
 		micro.Name(service),
 		micro.Version(version),
+		micro.Address(config.Address()),
 		micro.Registry(etcd.NewRegistry(registry.Addrs(config.EtcdAddress()))),
 	)
 

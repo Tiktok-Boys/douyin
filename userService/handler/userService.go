@@ -19,6 +19,7 @@ func NewUserService() *UserService {
 }
 
 func (u *UserService) Register(ctx context.Context, req *proto.DouyinUserRegisterRequest, rsp *proto.DouyinUserRegisterResponse) error {
+	u = NewUserService()
 	username := req.Username
 	password := req.Password
 	userId, err := u.mapper.getIdByUsername(ctx, username)
@@ -44,6 +45,12 @@ func (u *UserService) Register(ctx context.Context, req *proto.DouyinUserRegiste
 		rsp.StatusMsg = "获取用户名使用情况失败"
 		return err
 	}
+	err = u.mapper.initUserCounts(ctx, userId)
+	if err != nil {
+		rsp.StatusCode = -1
+		rsp.StatusMsg = "注册失败"
+		return err
+	}
 	var token string
 	token, err = u.auth.GenerateToken(ctx, username, password, userId)
 	if err != nil {
@@ -59,6 +66,7 @@ func (u *UserService) Register(ctx context.Context, req *proto.DouyinUserRegiste
 }
 
 func (u *UserService) Login(ctx context.Context, req *proto.DouyinUserLoginRequest, rsp *proto.DouyinUserLoginResponse) error {
+	u = NewUserService()
 	username := req.Username
 	password := req.Password
 	isVerified, err := u.mapper.isPasswordCorrect(ctx, username, password)
@@ -94,6 +102,7 @@ func (u *UserService) Login(ctx context.Context, req *proto.DouyinUserLoginReque
 }
 
 func (u *UserService) UserInfo(ctx context.Context, req *proto.DouyinUserRequest, rsp *proto.DouyinUserResponse) error {
+	u = NewUserService()
 	token := req.Token
 	targetUserID := req.UserId
 	selfUserId, err := u.auth.ValidateToken(ctx, token)
@@ -108,6 +117,11 @@ func (u *UserService) UserInfo(ctx context.Context, req *proto.DouyinUserRequest
 		rsp.StatusCode = -1
 		rsp.StatusMsg = "获取用户信息失败"
 		return err
+	}
+	if user == nil {
+		rsp.StatusCode = -1
+		rsp.StatusMsg = "用户不存在"
+		return errors.InternalServerError("500", "User doesn't exist")
 	}
 	rsp.StatusCode = 0
 	rsp.StatusMsg = "获取成功"
