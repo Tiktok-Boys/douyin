@@ -95,5 +95,6 @@ func serviceDiscovery(etcdAddr string) {
 	userService := micro.NewService(
 		micro.Client(grpcc.NewClient()),
 	)
+	userService.Init(micro.Registry(etcdReg))
 	handler.UserServiceClient = user.NewUserService(userServiceName, userService.Client())
 }

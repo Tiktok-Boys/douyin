@@ -19,7 +19,6 @@ func NewUserService() *UserService {
 }
 
 func (u *UserService) Register(ctx context.Context, req *proto.DouyinUserRegisterRequest, rsp *proto.DouyinUserRegisterResponse) error {
-	u = NewUserService()
 	username := req.Username
 	password := req.Password
 	userId, err := u.mapper.getIdByUsername(ctx, username)
@@ -33,16 +32,10 @@ func (u *UserService) Register(ctx context.Context, req *proto.DouyinUserRegiste
 		rsp.StatusMsg = "用户名已被注册!"
 		return errors.InternalServerError("500", "Username already registered")
 	}
-	err = u.mapper.createUser(ctx, username, password)
+	userId, err = u.mapper.createUser(ctx, username, password)
 	if err != nil {
 		rsp.StatusCode = -1
 		rsp.StatusMsg = "注册失败"
-		return err
-	}
-	userId, err = u.mapper.getIdByUsername(ctx, username)
-	if err != nil {
-		rsp.StatusCode = -1
-		rsp.StatusMsg = "获取用户名使用情况失败"
 		return err
 	}
 	err = u.mapper.initUserCounts(ctx, userId)
@@ -66,7 +59,6 @@ func (u *UserService) Register(ctx context.Context, req *proto.DouyinUserRegiste
 }
 
 func (u *UserService) Login(ctx context.Context, req *proto.DouyinUserLoginRequest, rsp *proto.DouyinUserLoginResponse) error {
-	u = NewUserService()
 	username := req.Username
 	password := req.Password
 	isVerified, err := u.mapper.isPasswordCorrect(ctx, username, password)
@@ -102,7 +94,6 @@ func (u *UserService) Login(ctx context.Context, req *proto.DouyinUserLoginReque
 }
 
 func (u *UserService) UserInfo(ctx context.Context, req *proto.DouyinUserRequest, rsp *proto.DouyinUserResponse) error {
-	u = NewUserService()
 	token := req.Token
 	targetUserID := req.UserId
 	selfUserId, err := u.auth.ValidateToken(ctx, token)

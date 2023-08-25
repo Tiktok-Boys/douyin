@@ -36,7 +36,6 @@ func NewMapper() *Mapper {
 
 func (m *Mapper) getUserInfo(ctx context.Context, targetUserId int64, myUserId int64, token string) (*userService.User, error) {
 	var user_ model.User
-	m = NewMapper()
 	err := m.db.First(&user_, targetUserId).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
@@ -79,7 +78,6 @@ func (m *Mapper) getUserInfo(ctx context.Context, targetUserId int64, myUserId i
 
 func (m *Mapper) getIdByUsername(ctx context.Context, username string) (int64, error) {
 	var user model.User
-	m = NewMapper()
 	err := m.db.Where("name = ?", username).First(&user).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return -1, nil
@@ -87,8 +85,7 @@ func (m *Mapper) getIdByUsername(ctx context.Context, username string) (int64, e
 	return user.Id, err
 }
 
-func (m *Mapper) createUser(ctx context.Context, username string, password string) error {
-	m = NewMapper()
+func (m *Mapper) createUser(ctx context.Context, username string, password string) (int64, error) {
 	user := model.User{
 		Name:             username,
 		Avatar:           "http://kasperxms.xyz:9000/avatar/c.jpg",
@@ -98,14 +95,13 @@ func (m *Mapper) createUser(ctx context.Context, username string, password strin
 	cipheredPassword := utils.Sha256(password)
 	err := m.rdb1.Set(ctx, username, cipheredPassword, 0).Err()
 	if err != nil {
-		return err
+		return -1, err
 	}
 	result := m.db.Select("name", "avatar", "background", "signature").Create(&user)
-	return result.Error
+	return user.Id, result.Error
 }
 
 func (m *Mapper) initUserCounts(ctx context.Context, userId int64) error {
-	m = NewMapper()
 	userIdStr := strconv.FormatInt(userId, 10)
 	err := m.rdb2.Set(ctx, userIdStr, "0", 0).Err()
 	err = m.rdb3.Set(ctx, userIdStr, "0", 0).Err()
@@ -119,7 +115,6 @@ func (m *Mapper) initUserCounts(ctx context.Context, userId int64) error {
 }
 
 func (m *Mapper) isPasswordCorrect(ctx context.Context, username string, password string) (bool, error) {
-	m = NewMapper()
 	cipheredPassword := utils.Sha256(password)
 	realPassword, err := m.rdb1.Get(ctx, username).Result()
 	if errors.Is(err, redis.Nil) {

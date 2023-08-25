@@ -28,7 +28,6 @@ func NewAuthentication() *Authentication {
 }
 
 func (auth *Authentication) ValidateToken(ctx context.Context, token string) (int64, error) {
-	auth = NewAuthentication()
 	val, err := auth.rdb.Get(ctx, token).Result()
 	if err != nil || err == redis.Nil || val == "" {
 		return -1, errors.NotFound("404", "token is not valid")
@@ -41,7 +40,6 @@ func (auth *Authentication) ValidateToken(ctx context.Context, token string) (in
 }
 
 func (auth *Authentication) RefreshToken(ctx context.Context, token string) error {
-	auth = NewAuthentication()
 	succeed, err := auth.rdb.Expire(ctx, token, validTime).Result()
 	if err != nil {
 		return err
@@ -67,7 +65,6 @@ func (auth *Authentication) GenerateToken(ctx context.Context, username, passwor
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := tokenClaims.SignedString(jwtSecret)
-	auth = NewAuthentication()
 	auth.rdb.Set(ctx, token, userId, validTime)
 	return token, err
 }

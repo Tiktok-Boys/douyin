@@ -26,7 +26,7 @@ type EtcdConfig struct {
 }
 
 func Address() string {
-	return fmt.Sprintf(":%d", cfg.Port)
+	return fmt.Sprintf("127.0.0.1:%d", cfg.Port)
 }
 
 func EtcdAddress() string {

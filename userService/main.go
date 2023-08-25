@@ -35,7 +35,7 @@ func main() {
 	)
 
 	// Register handler
-	if err := pb.RegisterUserServiceHandler(srv.Server(), new(handler.UserService)); err != nil {
+	if err := pb.RegisterUserServiceHandler(srv.Server(), handler.NewUserService()); err != nil {
 		logger.Fatal(err)
 	}
 	// Run service
