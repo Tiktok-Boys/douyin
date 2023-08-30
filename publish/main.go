@@ -8,5 +8,5 @@ import (
 
 func main() {
 	router := gin.Default()
-	router.POST("/douyin/publish/action", handler.Publish)
+	router.POST("/douyin/publish_2/action", handler.Publish)
 }
