@@ -11,8 +11,6 @@ type Video struct {
 	Cover_url  string
 	Title      string
 	Created_at time.Time
-	Updated_at time.Time
-	Deleted_at time.Time
 }
 
 func (Video) TableName() string {

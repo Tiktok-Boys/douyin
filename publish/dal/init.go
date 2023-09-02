@@ -1,8 +1,8 @@
 package dal
 
 import (
-	"feed/config"
-	"feed/dal/db"
+	"publish/config"
+	"publish/dal/db"
 )
 
 // init dal
